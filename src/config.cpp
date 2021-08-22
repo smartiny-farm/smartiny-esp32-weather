@@ -70,6 +70,7 @@ void SensorsHandler::getSensorsData(){
             Serial.print("Luminosidade em porta ");
             Serial.print(ports_[i]);
             Serial.print(": ");
+            sensors_data_[i]=map(sensors_data_[i],3700,200,0,100);
             Serial.println(sensors_data_[i]);
             break;
         }

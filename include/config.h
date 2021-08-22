@@ -3,8 +3,6 @@
 
 #include <Arduino.h>
 #include <WiFi.h>
-//#include <esp_wifi.h>
-//#include <esp_wpa2.h>
 #include <sensors.h>
 #include <vector>
 #include <string>
@@ -32,8 +30,8 @@ class SensorsHandler{
     int version_;
 
     public:
-    int ports_[4] = {32,26,2,4};
-    int sensors_types_[4] = {1,2,3,3};
+    int ports_[4] = {35,33,2,4};
+    int sensors_types_[4] = {1,4,3,2};
     float sensors_data_[4] = {0,0,0,0};
     int sensors_log_[4] = {0,0,0,0};
     SensorsHandler(int quantity){
