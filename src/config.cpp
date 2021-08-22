@@ -29,6 +29,10 @@ void SensorsHandler::ConfigureVector(){
             case 3:
                 sensors_vector_.push_back(new DHTSensor(ports_[i],sensors_types_[i],0));
                 break;
+            case 4:
+                sensors_vector_.push_back(new LightSensor(ports_[i],sensors_types_[i],0));
+                break;
+            
             }
         }
     }
@@ -62,7 +66,11 @@ void SensorsHandler::getSensorsData(){
             Serial.print(": ");
             Serial.println((float(int((sensors_data_[i]))%1000))/10);
             break;
-        default:
+        case 4:
+            Serial.print("Luminosidade em porta ");
+            Serial.print(ports_[i]);
+            Serial.print(": ");
+            Serial.println(sensors_data_[i]);
             break;
         }
 
@@ -100,7 +108,8 @@ void SensorsHandler::SendDataInfluxDB(){
                 sensor.addTag("Umidade do ar",static_cast<String>(sensors_data_[i]/1000));
                 sensor.addTag("Temperatura do ar",static_cast<String>((float(int((sensors_data_[i]))%1000))/10));
                 break;
-            default:
+            case 4:
+                sensor.addTag("Luminosidade",static_cast<String>(sensors_data_[i]));
                 break;
             }
         }
