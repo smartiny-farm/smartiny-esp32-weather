@@ -1,7 +1,9 @@
 #include <config.h>
+
 #define WIFI_AP_NAME        "hackerspace_2.4G_TURBO"
 #define WIFI_PASSWORD       "98c6dff101"
 
+///Default WiFi configuration
 void WiFiSetup(){
   Serial.println("Connecting to AP ...");
   WiFi.begin(WIFI_AP_NAME, WIFI_PASSWORD);
@@ -12,6 +14,15 @@ void WiFiSetup(){
   Serial.println("Connected to AP");
 }
 
+/**
+ * Sensors Setup
+ * Ports must have been set before 
+ * Types must have been set before
+ * 1 - Soil Moisture Sensor
+ * 2 - Soil Temperature Sensor
+ * 3 - DHT Sensor
+ * 4 - Light sensor
+ */
 void SensorsHandler::ConfigureVector(){
     if(sensors_vector_.empty()==1){
         for(int i=0;i<sensors_quantity_;i++){
@@ -32,12 +43,21 @@ void SensorsHandler::ConfigureVector(){
             case 4:
                 sensors_vector_.push_back(new LightSensor(ports_[i],sensors_types_[i],0));
                 break;
-            
+            default:
+                break;
             }
         }
     }
 }
 
+/**
+ * Get data from Vector Handler to print in Serial
+ * Vector must have been set up
+ * 1 - Soil Moisture Sensor
+ * 2 - Soil Temperature Sensor
+ * 3 - DHT Sensor
+ * 4 - Light sensor
+ */
 void SensorsHandler::getSensorsData(){
     for(int i=0;i<sensors_quantity_;i++){
         sensors_data_[i]=sensors_vector_[i]->getData();
@@ -78,9 +98,17 @@ void SensorsHandler::getSensorsData(){
     }
 }
 
+/**
+ * Get data from Vector Handler and send to InfluxDB
+ * Vector must have been set up
+ * 1 - Soil Moisture Sensor
+ * 2 - Soil Temperature Sensor
+ * 3 - DHT Sensor
+ * 4 - Light sensor
+ */
 void SensorsHandler::SendDataInfluxDB(){
     InfluxDBClient client(INFLUXDB_URL, INFLUXDB_ORG, INFLUXDB_BUCKET, INFLUXDB_TOKEN, InfluxDbCloud2CACert);
-    Point sensor("wifi_status_ft");
+    Point sensor("wifi_status_t3");
     if (client.validateConnection()) {
         Serial.print("Connected to InfluxDB: ");
         Serial.println(client.getServerUrl());
@@ -88,35 +116,34 @@ void SensorsHandler::SendDataInfluxDB(){
         Serial.print("InfluxDB connection failed: ");
         Serial.println(client.getLastErrorMessage());
     }
-    //Point pointDevice("device_status");
-    //sensor.addTag("device", DEVICE);
-    //sensor.addTag("SSID", WiFi.SSID());
+    sensor.addTag("device", DEVICE);
+    sensor.addTag("SSID", WiFi.SSID());
     timeSync(TZ_INFO, "pool.ntp.org", "time.nis.gov");
     sensor.clearFields();
-    //sensor.addField("rssi", WiFi.RSSI());
+    sensor.addField("rssi", WiFi.RSSI());
 
     for(int i=0;i<sensors_quantity_;i++){
         if(sensors_types_[i]!=0){
             switch (sensors_types_[i])
             {
             case 1:
-                sensor.addTag("Umidade do solo",static_cast<String>(sensors_data_[i]));
+                sensor.addField("Umidade do solo",static_cast<String>(sensors_data_[i]));
                 break;
             case 2:
-                sensor.addTag("Temperatura do solo",static_cast<String>(sensors_data_[i]));
+                sensor.addField("Temperatura do solo",static_cast<String>(sensors_data_[i]));
                 break;
             case 3:
-                sensor.addTag("Umidade do ar",static_cast<String>(sensors_data_[i]/1000));
-                sensor.addTag("Temperatura do ar",static_cast<String>((float(int((sensors_data_[i]))%1000))/10));
+                sensor.addField("Umidade do ar",static_cast<String>(sensors_data_[i]/1000));
+                sensor.addField("Temperatura do ar",static_cast<String>((float(int((sensors_data_[i]))%1000))/10));
                 break;
             case 4:
-                sensor.addTag("Luminosidade",static_cast<String>(sensors_data_[i]));
+                sensor.addField("Luminosidade",static_cast<String>(sensors_data_[i]));
+                break;
+            default:
                 break;
             }
         }
     }
-    
     client.writePoint(sensor);
-    
 }
 
