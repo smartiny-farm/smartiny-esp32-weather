@@ -9,14 +9,19 @@
 #include <vector>
 #include <string>
 #include <InfluxDbClient.h>
+#include <InfluxDbCloud.h>
 
-#define INFLUXDB_URL "influxdb-url"
-// InfluxDB 2 server or cloud API authentication token (Use: InfluxDB UI -> Load Data -> Tokens -> <select token>)
-#define INFLUXDB_TOKEN "token"
-// InfluxDB 2 organization name or id (Use: InfluxDB UI -> Settings -> Profile -> <name under tile> )
-#define INFLUXDB_ORG "org"
-// InfluxDB 2 bucket name (Use: InfluxDB UI -> Load Data -> Buckets)
-#define INFLUXDB_BUCKET "bucket"
+#define DEVICE "ESP32"
+
+#define INFLUXDB_URL "http://192.168.1.103:7788"
+// InfluxDB v2 server or cloud API authentication token (Use: InfluxDB UI -> Data -> Tokens -> <select token>)
+#define INFLUXDB_TOKEN "zNAfTyXoyiHIWR0SXcji6cGmsFSyKbskTJPucEItyihZ5raKwpvaqedkxN_stE5xsKPgrtfPp9OXWOJoulL79w=="
+// InfluxDB v2 organization id (Use: InfluxDB UI -> User -> About -> Common Ids )
+#define INFLUXDB_ORG "TEste"
+// InfluxDB v2 bucket name (Use: InfluxDB UI ->  Data -> Buckets)
+#define INFLUXDB_BUCKET "Teste"
+
+#define TZ_INFO "CET-1CEST,M3.5.0,M10.5.0/3"
 
 
 

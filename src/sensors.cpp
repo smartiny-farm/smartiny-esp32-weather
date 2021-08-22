@@ -38,3 +38,10 @@ float DHTSensor::getData(){
     setData(h*1000+t*10);
     return(h*1000+t*10);
 }
+
+float LightSensor::getData(){
+    float light;
+    light = analogRead(getPin());
+    setData(light);
+    return(light);
+}
