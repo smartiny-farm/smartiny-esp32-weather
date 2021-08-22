@@ -1,39 +1,39 @@
+# Smartiny
+- Plataforma de monitoramente de clima local Smartiny
 
-This directory is intended for project header files.
+## Guia de Instalação:
+1.1. Instalar e fazer Setup inicial do Visual Studio Code: - <https://code.visualstudio.com/docs/setup/setup-overview>
+1.2. Instalar e fazer Setup inicial do Platform.io: - <https://platformio.org/install>
+2. Compilar pelo Platform.io->flash();
 
-A header file is a file containing C declarations and macro definitions
-to be shared between several project source files. You request the use of a
-header file in your project source file (C, C++, etc) located in `src` folder
-by including it, with the C preprocessing directive `#include'.
+## Pré-requisitos: 
+1. Bibliotecas Utilizadas:
+	- iostream
+	- string
+	- vector
+	- OneWire.h
+	- DallasTemperature.h
+	- DHT.h
+	- InfluxDbClient.h
+	- InfluxDbCloud.h
+    - Arduino.h
+2. Sistema operacional: Linux 20.04
+3. IDE : Visual Studio Code : Platform.io
+4. Compilador: G++ 
+5. Dialeto == C++17
 
-```src/main.c
+## Guia de Uso:
+1.  Execução automática - output de dados por Serial (.1) e por InfluxDB (.2)
+1.1. Será sempre mostrado inicialmente setups de rede e sensores
+1.2. Dados de leitura serão mostrados, assim como as referentes portas
+1.3. Logs de envio ao InfluxDB serão mostrados por Serial ao final de toda execução
+2.1. Pelo InfluxDB é possível verificação dos dados com cadastro Field em tag "device"
+	
+## Autoria:
+- João Pedro Girardi
 
-#include "header.h"
+Documentação sobre a biblioteca InfluxDbClient.h e InfluxDbCloud.h disponível em:
+<https://github.com/turing-farm/web-smartiny>
 
-int main (void)
-{
- ...
-}
-```
 
-Including a header file produces the same results as copying the header file
-into each source file that needs it. Such copying would be time-consuming
-and error-prone. With a header file, the related declarations appear
-in only one place. If they need to be changed, they can be changed in one
-place, and programs that include the header file will automatically use the
-new version when next recompiled. The header file eliminates the labor of
-finding and changing all the copies as well as the risk that a failure to
-find one copy will result in inconsistencies within a program.
 
-In C, the usual convention is to give header files names that end with `.h'.
-It is most portable to use only letters, digits, dashes, and underscores in
-header file names, and at most one dot.
-
-Read more about using header files in official GCC documentation:
-
-* Include Syntax
-* Include Operation
-* Once-Only Headers
-* Computed Includes
-
-https://gcc.gnu.org/onlinedocs/cpp/Header-Files.html
