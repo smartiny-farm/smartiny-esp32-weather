@@ -19,6 +19,7 @@ class GenericSensor{
         this->data_ = 0;
     }
     GenericSensor(int pin, int type, float data){
+        Serial.println("Creating new Generic Sensor");
         this->pin_ = pin;
         this->type_ = type;
         this->data_ = data;
@@ -78,6 +79,7 @@ class SoilTemperatureSensor : public GenericSensor{
 
     public:
     SoilTemperatureSensor(int pin, int type, float data) : GenericSensor(pin,type,data){
+        Serial.println("Creating new Soil Temperature Sensor");
         setOneWirePointer(pin);
         setDallasHandler();
         DallasBegin();
@@ -93,6 +95,7 @@ class SoilTemperatureSensor : public GenericSensor{
 class SoilMoistureSensor : public GenericSensor{
     public:
     SoilMoistureSensor(int pin, int type, float data) : GenericSensor(pin,type,data){
+        Serial.println("Creating new Soil Moisture Sensor");
     }
     ~SoilMoistureSensor(){
     }
@@ -120,6 +123,7 @@ class DHTSensor : public GenericSensor{
 
     public:
     DHTSensor(int pin, int type, float data) : GenericSensor(pin,type,data){
+        Serial.println("Creating new DHT Sensor");
         setDHTHandler(pin);
         DHTBegin();
     }
@@ -128,6 +132,16 @@ class DHTSensor : public GenericSensor{
     }
     virtual float getData();
 
+};
+
+class LightSensor : public GenericSensor{
+    public:
+    LightSensor(int pin, int type, float data) : GenericSensor(pin,type,data){
+        Serial.println("Creating new Light Sensor");
+    }
+    ~LightSensor(){
+    }
+    virtual float getData();
 };
 
 #endif
